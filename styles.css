@@ -1,0 +1,75 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+  color: white;
+}
+
+h1 {
+  font-size: 2rem;
+  color: #f76262;
+}
+h2 {
+  font-size: 1.3rem;
+  color: #f76262;
+}
+p {
+  line-height: 1.5;
+}
+
+canvas {
+  display: block;
+  margin: auto;
+  box-shadow: 1px 1px 3px 4px rgba(0, 0, 0, 0.3);
+  border-radius: 2px;
+}
+
+.game-area {
+  background: #293462;
+  padding-bottom: 50px;
+}
+
+.game-title {
+  margin: 0;
+  padding: 10px 0 5px 10px;
+}
+.status-area {
+  font-weight: bold;
+  width: 487px;
+  margin: 10px auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+button {
+  border: none;
+  padding: 10px 20px;
+  border-radius: 2px;
+  outline: none;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background: rgba(247, 98, 98, 1);
+}
+
+article {
+  width: 70%;
+  margin: 70px auto 50px;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+h2 {
+  margin-top: 20px;
+}
+
+@media only screen and (max-width: 800px) {
+  article {
+    width: 90%;
+  }
+}

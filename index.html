@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Halma Game</title>
+    <!-- GoogleFonts -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:400,700,900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="game-area" >
+      <h1 class="game-title">Halma Game</h1>
+      <p class="status-area"><button>Reset</button></p>
+      <canvas width="487" height="487"></canvas>
+    </main>
+    
+    <article id="how-to-play">
+      <h1>How to play</h1>
+      <p>
+        Halma is a centuries-old board game. Many variations exist. In this
+        example, I’ve created a solitaire version of Halma with 9 pieces on a 9
+        × 9 board. In the beginning of the game, the pieces form a 3 × 3 square
+        in the bottom-left corner of the board. The object of the game is to
+        move all the pieces so they form a 3 × 3 square in the upper-right
+        corner of the board, in the least number of moves.
+      </p>
+      <h2>There are two types of legal moves in Halma</h2>
+      <ul>
+        <li>
+          <p>
+            Take a piece and move it to any adjacent empty square. An “empty”
+            square is one that does not currently have a piece in it. An
+            “adjacent” square is immediately north, south, east, west,
+            northwest, northeast, southwest, or southeast of the piece’s current
+            position.
+          </p>
+        </li>
+        <li>
+          <p>
+            Take a piece and hop over an adjacent piece, and possibly repeat.
+            That is, if you hop over an adjacent piece, then hop over another
+            piece adjacent to your new position, that counts as a single move.
+            In fact, any number of hops still counts as a single move.
+          </p>
+        </li>
+      </ul>
+    </article>
+    <!-- Custom Script -->
+    <script src="index.js"></script>
+  </body>
+</html>
