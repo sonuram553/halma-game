@@ -29,7 +29,24 @@ context.stroke();
 
 context.strokeStyle = "black";
 
-function initializeCirclesCoordinate() {
+if (!!window.localStorage) {
+  if (localStorage.gameInProgress === "true") {
+    //console.log("Game in progress");
+    moves = parseInt(localStorage.moves);
+    selectedCircle = parseInt(localStorage.selectedCircle);
+
+    for (let i = 0; i < 9; i++) {
+      circleCellCoordinates[i] = {
+        x: parseInt(localStorage["circle" + i + "X"]),
+        y: parseInt(localStorage["circle" + i + "Y"])
+      };
+    }
+
+    updateStatus();
+  } else newGame();
+} else newGame();
+
+function newGame() {
   let count = 0;
   for (let i = 0; i < 3; i++) {
     for (let j = 6; j < 9; j++) {
@@ -40,7 +57,6 @@ function initializeCirclesCoordinate() {
     }
   }
 }
-initializeCirclesCoordinate();
 
 function checkGame() {
   let flag = 0;
@@ -105,6 +121,8 @@ canvas.onclick = e => {
   } else selectedCircle = undefined;
 
   createCircles();
+
+  saveGameState();
 };
 
 function containsCircle(x, y) {
@@ -165,11 +183,28 @@ function resetGame() {
   moves = 0;
   jumping = false;
   updateStatus();
-  initializeCirclesCoordinate();
+  newGame();
   createCircles();
+
+  localStorage.clear();
 }
 
 resetBtn.onclick = () => {
   clearCircles();
   resetGame();
 };
+
+//------------- Local Storage ----------------
+let gameInProgress = true;
+function saveGameState() {
+  if (!!window.localStorage) {
+    localStorage.gameInProgress = gameInProgress;
+    for (let i = 0; i < 9; i++) {
+      localStorage["circle" + i + "X"] = circleCellCoordinates[i].x;
+      localStorage["circle" + i + "Y"] = circleCellCoordinates[i].y;
+    }
+
+    localStorage.moves = moves;
+    localStorage.selectedCircle = selectedCircle;
+  }
+}
