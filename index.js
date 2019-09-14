@@ -1,29 +1,32 @@
 "use strict";
 
 let canvas = document.querySelector("canvas"),
-  status = document.querySelector(".status-area"),
+  statusArea = document.querySelector(".status-area"),
   resetBtn = document.querySelector("button"),
-  span = document.createElement("span"),
+  status = document.createElement("span"),
+  gameOverDialogBox = document.querySelector(".gameOverDialogBox"),
+  totalMovesHeading = document.querySelector(".totalMovesHeading"),
   context = canvas.getContext("2d"),
-  cellWidth = 54,
-  radius = 20,
+  cellWidth = canvas.offsetHeight / 9,
+  radius = 18,
   circleCellCoordinates = [],
   selectedCircle = undefined,
   moves = 0;
 
-span.innerText = "Moves: " + moves;
-status.insertBefore(span, status.childNodes[0]);
+status.innerText = "Moves: " + moves;
+statusArea.insertBefore(status, statusArea.childNodes[0]);
 
 //Create grid
-for (let i = 0.5; i <= 487; i += cellWidth) {
+for (let i = 0.5; i < 405; i += cellWidth) {
   //Vertical lines
   context.moveTo(i, 0);
-  context.lineTo(i, 487);
+  context.lineTo(i, 404.5);
 
   //Horizontal lines
   context.moveTo(0, i);
-  context.lineTo(487, i);
+  context.lineTo(404.5, i);
 }
+
 context.strokeStyle = "#aaa";
 context.stroke();
 
@@ -58,19 +61,21 @@ function newGame() {
   }
 }
 
-function checkGame() {
+function isGameOver() {
   let flag = 0;
   for (let i = 0; i < 9; i++) {
     if (
-      !(circleCellCoordinates[i].x >= 324 && circleCellCoordinates[i].y <= 108)
+      !(circleCellCoordinates[i].x >= 270 && circleCellCoordinates[i].y <= 90)
     ) {
       flag = 1;
       break;
     }
   }
 
-  if (flag === 0) return true;
-  else return false;
+  if (flag === 0) {
+    totalMovesHeading.textContent = "Total Moves: " + moves;
+    gameOverDialogBox.showModal();
+  } else return false;
 }
 
 createCircles();
@@ -78,8 +83,8 @@ function createCircles() {
   clearCircles();
   let count = 0;
   circleCellCoordinates.forEach(coordinate => {
-    let x = coordinate.x + 27.5,
-      y = coordinate.y + 27.5;
+    let x = coordinate.x + 22.5,
+      y = coordinate.y + 22.5;
     context.beginPath();
 
     if (count === selectedCircle) {
@@ -117,7 +122,7 @@ canvas.onclick = e => {
   if (c) selectedCircle = c - 1;
   else if (canMove(x, y)) {
     move(x, y);
-    if (checkGame()) console.log("Game over");
+    isGameOver();
   } else selectedCircle = undefined;
 
   createCircles();
@@ -134,7 +139,7 @@ function containsCircle(x, y) {
 }
 
 function updateStatus() {
-  span.innerText = "Moves: " + moves;
+  status.innerText = "Moves: " + moves;
 }
 
 let jumping = false;
@@ -144,8 +149,8 @@ function canMove(x, y) {
 
   //Can move to adjacent empty cell
   if (
-    Math.abs(x - selectedCircleX) < 55 &&
-    Math.abs(y - selectedCircleY) < 55
+    Math.abs(x - selectedCircleX) < 46 &&
+    Math.abs(y - selectedCircleY) < 46
   ) {
     moves++;
     updateStatus();
@@ -176,6 +181,7 @@ function move(x, y) {
   circleCellCoordinates[selectedCircle].x = x;
   circleCellCoordinates[selectedCircle].y = y;
   lastSelectedCircle = selectedCircle;
+  selectedCircle = undefined;
 }
 
 function resetGame() {
@@ -194,6 +200,11 @@ resetBtn.onclick = () => {
   resetGame();
 };
 
+gameOverDialogBox.addEventListener("close", () => {
+  clearCircles();
+  resetGame();
+});
+
 //------------- Local Storage ----------------
 let gameInProgress = true;
 function saveGameState() {
@@ -208,3 +219,10 @@ function saveGameState() {
     localStorage.selectedCircle = selectedCircle;
   }
 }
+
+//Experiment
+/* let showBtn = document.querySelector(".showBtn");
+showBtn.onclick = () => {
+  totalMovesHeading.textContent = "Total Moves: " + moves;
+  gameOverDialogBox.showModal();
+}; */

@@ -14,12 +14,23 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <main class="game-area" >
+    <main class="game-area">
       <h1 class="game-title">Halma Game</h1>
-      <p class="status-area"><button>Reset</button></p>
-      <canvas width="487" height="487"></canvas>
+      <p class="status-area"><button class="resetBtn">Reset</button></p>
+      <canvas width="405" height="405"></canvas>
+
+      <dialog class="gameOverDialogBox">
+        <hgroup>
+          <h1>Game Over</h1>
+          <h2 class="totalMovesHeading">Total Moves:</h2>
+        </hgroup>
+        <form method="dialog">
+          <button class="closeBtn">X</button>
+        </form>
+      </dialog>
+      <!-- <button class="showBtn">show</button> -->
     </main>
-    
+
     <article id="how-to-play">
       <h1>How to play</h1>
       <p>
@@ -30,6 +41,7 @@
         move all the pieces so they form a 3 × 3 square in the upper-right
         corner of the board, in the least number of moves.
       </p>
+
       <h2>There are two types of legal moves in Halma</h2>
       <ul>
         <li>
@@ -51,6 +63,7 @@
         </li>
       </ul>
     </article>
+
     <!-- Custom Script -->
     <script src="index.js"></script>
   </body>

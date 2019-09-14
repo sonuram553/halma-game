@@ -4,9 +4,14 @@
 
 body {
   min-height: 100vh;
+  width: 100%;
   margin: 0;
   font-family: "Roboto", sans-serif;
   color: white;
+}
+
+button {
+  cursor: pointer;
 }
 
 h1 {
@@ -39,23 +44,27 @@ canvas {
 }
 .status-area {
   font-weight: bold;
-  width: 487px;
+  width: 402px;
   margin: 10px auto;
   display: flex;
   justify-content: space-between;
   align-items: baseline;
 }
 
-button {
+.resetBtn {
   border: none;
-  padding: 10px 20px;
+  padding: 10px 15px;
   border-radius: 2px;
   outline: none;
   transition: background-color 0.3s;
 }
 
-button:hover {
+.resetBtn:hover {
   background: rgba(247, 98, 98, 1);
+}
+
+.resetBtn:active {
+  background: yellow;
 }
 
 article {
@@ -65,7 +74,39 @@ article {
 }
 
 h2 {
-  margin-top: 20px;
+  padding-top: 20px;
+}
+
+/* Game over dialog box */
+.gameOverDialogBox {
+  position: fixed;
+  font-family: "Space Mono", monospace;
+  background: #0d47a1;
+  border: none;
+}
+.gameOverDialogBox::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.closeBtn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  background: none;
+  outline: none;
+  color: white;
+  border: none;
+}
+
+.closeBtn:hover {
+  background: rgba(247, 98, 98, 1);
+}
+
+.closeBtn:active {
+  background: rgba(247, 98, 98, 0.8);
 }
 
 @media only screen and (max-width: 800px) {
