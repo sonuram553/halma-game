@@ -32,7 +32,7 @@ context.stroke();
 
 context.strokeStyle = "black";
 
-if (!!window.localStorage) {
+if (window.localStorage) {
   if (localStorage.gameInProgress === "true") {
     //console.log("Game in progress");
     moves = parseInt(localStorage.moves);
@@ -41,7 +41,7 @@ if (!!window.localStorage) {
     for (let i = 0; i < 9; i++) {
       circleCellCoordinates[i] = {
         x: parseInt(localStorage["circle" + i + "X"]),
-        y: parseInt(localStorage["circle" + i + "Y"])
+        y: parseInt(localStorage["circle" + i + "Y"]),
       };
     }
 
@@ -55,7 +55,7 @@ function newGame() {
     for (let j = 6; j < 9; j++) {
       let x = i * cellWidth,
         y = j * cellWidth;
-      circleCellCoordinates[count] = { x: x, y: y };
+      circleCellCoordinates[count] = { x, y };
       count++;
     }
   }
@@ -82,7 +82,7 @@ createCircles();
 function createCircles() {
   clearCircles();
   let count = 0;
-  circleCellCoordinates.forEach(coordinate => {
+  circleCellCoordinates.forEach((coordinate) => {
     let x = coordinate.x + 22.5,
       y = coordinate.y + 22.5;
     context.beginPath();
@@ -100,7 +100,7 @@ function createCircles() {
 }
 
 function clearCircles() {
-  circleCellCoordinates.forEach(coordinate => {
+  circleCellCoordinates.forEach((coordinate) => {
     context.clearRect(
       coordinate.x + 1.5,
       coordinate.y + 0.5,
@@ -111,7 +111,7 @@ function clearCircles() {
 }
 
 let lastSelectedCircle;
-canvas.onclick = e => {
+canvas.onclick = (e) => {
   let mouseX = e.offsetX,
     mouseY = e.offsetY,
     //Upper left coordinate of selected cell
@@ -119,7 +119,7 @@ canvas.onclick = e => {
     y = Math.floor(mouseY / cellWidth) * cellWidth;
 
   let c = containsCircle(x, y);
-  if (c) selectedCircle = c - 1;
+  if (c !== false) selectedCircle = c;
   else if (canMove(x, y)) {
     move(x, y);
     isGameOver();
@@ -133,9 +133,10 @@ canvas.onclick = e => {
 function containsCircle(x, y) {
   for (let i = 0; i < 9; i++) {
     if (circleCellCoordinates[i].x === x && circleCellCoordinates[i].y === y) {
-      return i + 1;
+      return i;
     }
   }
+  return false;
 }
 
 function updateStatus() {
@@ -161,7 +162,8 @@ function canMove(x, y) {
   //Can jump to second cell
   let xDiff = (selectedCircleX - x) / 2,
     yDiff = (selectedCircleY - y) / 2;
-  if (containsCircle(x + xDiff, y + yDiff)) {
+
+  if (containsCircle(x + xDiff, y + yDiff) !== false) {
     if (!jumping) {
       moves++;
       updateStatus();
@@ -208,7 +210,7 @@ gameOverDialogBox.addEventListener("close", () => {
 //------------- Local Storage ----------------
 let gameInProgress = true;
 function saveGameState() {
-  if (!!window.localStorage) {
+  if (window.localStorage) {
     localStorage.gameInProgress = gameInProgress;
     for (let i = 0; i < 9; i++) {
       localStorage["circle" + i + "X"] = circleCellCoordinates[i].x;
@@ -219,10 +221,3 @@ function saveGameState() {
     localStorage.selectedCircle = selectedCircle;
   }
 }
-
-//Experiment
-/* let showBtn = document.querySelector(".showBtn");
-showBtn.onclick = () => {
-  totalMovesHeading.textContent = "Total Moves: " + moves;
-  gameOverDialogBox.showModal();
-}; */
