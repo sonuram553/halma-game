@@ -6,9 +6,18 @@ let canvas = document.querySelector("canvas"),
   status = document.createElement("span"),
   gameOverDialogBox = document.querySelector(".gameOverDialogBox"),
   totalMovesHeading = document.querySelector(".totalMovesHeading"),
-  context = canvas.getContext("2d"),
-  cellWidth = canvas.offsetHeight / 9,
-  radius = 18,
+  context = canvas.getContext("2d");
+
+canvas.height = 405;
+canvas.width = 405;
+if (window.innerWidth < 600) {
+  canvas.height = 370;
+  canvas.width = 370;
+}
+
+let cellWidth = Math.floor(canvas.width / 9),
+  canvasWidth = canvas.width,
+  radius = Math.floor(cellWidth / 2) - 4,
   circleCellCoordinates = [],
   selectedCircle = undefined,
   moves = 0;
@@ -17,20 +26,23 @@ status.innerText = "Moves: " + moves;
 statusArea.insertBefore(status, statusArea.childNodes[0]);
 
 //Create grid
-for (let i = 0.5; i < 405; i += cellWidth) {
-  //Vertical lines
-  context.moveTo(i, 0);
-  context.lineTo(i, 404.5);
+createGrid();
+function createGrid() {
+  for (let i = 0.5; i < canvasWidth; i += cellWidth) {
+    //Vertical lines
+    context.moveTo(i, 0);
+    context.lineTo(i, canvasWidth - 0.5);
 
-  //Horizontal lines
-  context.moveTo(0, i);
-  context.lineTo(404.5, i);
+    //Horizontal lines
+    context.moveTo(0, i);
+    context.lineTo(canvasWidth - 0.5, i);
+  }
+
+  context.strokeStyle = "#aaa";
+  context.stroke();
+
+  context.strokeStyle = "black";
 }
-
-context.strokeStyle = "#aaa";
-context.stroke();
-
-context.strokeStyle = "black";
 
 if (window.localStorage) {
   if (localStorage.gameInProgress === "true") {
@@ -63,10 +75,13 @@ function newGame() {
 
 function isGameOver() {
   let flag = 0;
+  const X = canvasWidth - cellWidth * 3 - 1;
+  const Y = 2 * cellWidth;
+
+  console.log(X, Y);
+
   for (let i = 0; i < 9; i++) {
-    if (
-      !(circleCellCoordinates[i].x >= 270 && circleCellCoordinates[i].y <= 90)
-    ) {
+    if (!(circleCellCoordinates[i].x >= X && circleCellCoordinates[i].y <= Y)) {
       flag = 1;
       break;
     }
@@ -83,8 +98,8 @@ function createCircles() {
   clearCircles();
   let count = 0;
   circleCellCoordinates.forEach((coordinate) => {
-    let x = coordinate.x + 22.5,
-      y = coordinate.y + 22.5;
+    let x = coordinate.x + cellWidth / 2,
+      y = coordinate.y + cellWidth / 2;
     context.beginPath();
 
     if (count === selectedCircle) {
@@ -150,8 +165,8 @@ function canMove(x, y) {
 
   //Can move to adjacent empty cell
   if (
-    Math.abs(x - selectedCircleX) < 46 &&
-    Math.abs(y - selectedCircleY) < 46
+    Math.abs(x - selectedCircleX) < cellWidth + 1 &&
+    Math.abs(y - selectedCircleY) < cellWidth + 1
   ) {
     moves++;
     updateStatus();
